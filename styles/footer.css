@@ -9,4 +9,9 @@ footer {
     flex-direction: row;
     bottom: 0;
     font-size: 14px;
+    color: #ffffff;
+}
+
+footer p:hover {
+    cursor: pointer;
 }

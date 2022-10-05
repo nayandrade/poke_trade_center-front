@@ -9,6 +9,10 @@
         <link rel="stylesheet" href="./styles/footer.css" />
         <link rel="stylesheet" href="./styles/album.css" />
         <link rel="stylesheet" href="./styles/conteiner.css" />
+        <link rel="stylesheet" href="./styles/tabela.css" />
+        <link rel="stylesheet" href="./styles/modal.css" />
+        <link rel="stylesheet" href="./styles/modalDeTroca.css" />
+        <link rel="stylesheet" href="./styles/modalMercado.css" />
     </head>
     <body>
         <header>
@@ -21,16 +25,23 @@
             <div>
                 <img src="./assets/logocenter.png" id="logo" />
             </div>
-            <h2 id="sair"><a href="">SAIR</a></h2>
+            <h2 id="sair" onclick="modalsair()">SAIR</h2>
+            <div id="comple"></div>
         </header>
+
         <div id="conteiner"></div>
 
+        <div id="modal">
+            <div id="modal-content"></div>
+        </div>
+
         <footer>
-            <div class="fot"><a href="">HOME</a></div>
-            <div class="fot"><a href="">MERCADO</a></div>
-            <div class="fot"><a href="">POKEMONS</a></div>
-            <div class="fot"><a href="">PERFIL</a></div>
+            <div class="fot"><p>HOME</p></div>
+            <div class="fot"><p onclick="market()">MERCADO</p></div>
+            <div class="fot"><p onclick="pokemons()">POKEMONS</p></div>
+            <div class="fot"><p onclick="meuspedidos()">PERFIL</p></div>
         </footer>
+
         <script src="./scripts/album.js"></script>
     </body>
 </html>
