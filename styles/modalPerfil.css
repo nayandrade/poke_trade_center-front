@@ -1,0 +1,24 @@
+#trocarftmodal {
+    width: 435px;
+    border: 2px solid #6c757d;
+}
+
+#formEditar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-content: space-around;
+    height: 160px;
+    margin-bottom: 10px;
+}
+
+#formEditar input {
+    height: 40px;
+    color: #212529;
+    border: 2px solid #6c757d;
+    width: 380px;
+}
+
+#divnome {
+    margin-left: 5px;
+}
