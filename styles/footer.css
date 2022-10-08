@@ -11,7 +11,3 @@ footer {
     font-size: 14px;
     color: #ffffff;
 }
-
-footer p:hover {
-    cursor: pointer;
-}
