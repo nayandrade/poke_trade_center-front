@@ -12,9 +12,12 @@ for (let i = 1; i < 152; i++) {
     pokelist.push(pokemon);
 }
 
-export function pokemons() {
+export async function pokemons() {
     headerFooter();
     document.getElementById("conteiner").innerHTML = "";
+
+    const pokemons = await fetch("http://localhost:8000/pokedex");
+    console.log(pokemons);
 
     pokelist.forEach((pokemon) => {
         let ausente = "";
@@ -27,7 +30,7 @@ export function pokemons() {
         document.getElementById("conteiner").innerHTML += `
         <div id="cardConteiner">
             <div id="card">
-                <img class="${ausente} cardImage" src="cartamelhorada/${pokemon.img}" alt="">
+                <img class="${ausente} cardImage" src="http://localhost:8000/image/${pokemon.pokemonImage}" alt="">
                 <p>Quantidade:</p>
                 <button type="button">Anunciar</button>
             </div>
