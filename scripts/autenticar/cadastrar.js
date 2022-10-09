@@ -16,9 +16,16 @@ export async function cadastrar() {
         erro.textContent = "O campo E-mail precisa ser preenchido!";
         return;
     }
-    if (senha === "") {
+    const re = /\S+@\S+\.\S+/;
+    const valid = re.test(email);
+    if (!valid) {
         erro.style.display = "block";
-        erro.textContent = "O campo Senha precisa ser preenchido!";
+        erro.textContent = "E-mail inválido!";
+        return;
+    }
+    if (senha.length < 6) {
+        erro.style.display = "block";
+        erro.textContent = "A senha precisa ter no mínimo 6 digitos!";
         return;
     }
     if (senhaconf === "") {
@@ -32,18 +39,26 @@ export async function cadastrar() {
         return;
     }
 
-    const a = await fetch("http://localhost:8000/signup", {
+    const response = await fetch("http://localhost:8000/signup", {
         method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
         body: JSON.stringify({
             email: email,
             password: senha,
             userName: nome,
-            userImage: "imagem",
-            userStatus: "user",
         }),
     });
-    const res = await a.json();
-    const token = JSON.stringify(res);
 
-    console.log(token);
+    if (response.status === 201) {
+        window.location.hash = "#inicio";
+        return;
+    }
+    if (response.status === 409) {
+        erro.style.display = "block";
+        erro.textContent = "E-mail já cadastrado!";
+        return;
+    }
 }
