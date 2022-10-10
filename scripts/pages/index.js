@@ -6,6 +6,7 @@ import { meuspedidos } from "./meusPedidos.js";
 import { perfil } from "./perfil.js";
 import { pokemons } from "./pokedex.js";
 import { pagina404 } from "./pagina404.js";
+import { modalsair } from "./modalSair.js";
 
 function fecharModal() {
     document.querySelector("#modal").style.display = "none";
@@ -32,6 +33,8 @@ function headerFooter() {
     <div class="fot"><a href="#pokedex">POKEMONS</a></div>
     <div class="fot"><a href="#perfil">PERFIL</a></div>
     `;
+
+    document.querySelector("#sair").addEventListener("click", modalsair);
 }
 
 export {

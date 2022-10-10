@@ -32,7 +32,7 @@ export async function logar() {
         window.location.hash = "#inicio";
         return;
     }
-    if (response.status === 401) {
+    if (response.status === 401 || senha.length < 6) {
         erro.style.display = "block";
         erro.textContent = "E-mail ou senha inválido!";
         return;

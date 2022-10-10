@@ -1,4 +1,3 @@
-import { modalsair } from "./modalSair.js";
 import { headerFooter } from "./index.js";
 
 export function home() {
@@ -29,6 +28,4 @@ export function home() {
         </div>
     </div>
     `;
-
-    document.querySelector("#sair").addEventListener("click", modalsair);
 }
