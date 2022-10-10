@@ -36,8 +36,42 @@ async function trocar() {
             "Content-Type": "application/x-www-form-urlencoded",
         }),
     });
-    const pokemons = await pokeraw.json();
 
-    fecharModal();
+    if (pokeraw.status === 200) {
+        document.querySelector("#modal-content").innerHTML = `
+        <p id="textoTroca">Troca efetuada com sucesso!</p>
+        <div>
+            <button type="button" class="negativobtn">FECHAR</button>
+        </div>
+        `;
+    }
+    if (pokeraw.status === 404) {
+        document.querySelector("#modal-content").innerHTML = `
+        <p id="textoTroca">Você não possui esse pokemon para trocar!</p>
+        <div>
+            <button type="button" class="negativobtn">FECHAR</button>
+        </div>
+        `;
+    }
+    if (pokeraw.status === 400) {
+        document.querySelector("#modal-content").innerHTML = `
+        <p id="textoTroca">Carta não disponível para troca!</p>
+        <div>
+            <button type="button" class="negativobtn">FECHAR</button>
+        </div>
+        `;
+    }
+    if (pokeraw.status === 500) {
+        document.querySelector("#modal-content").innerHTML = `
+        <p id="textoTroca">Erro ao realizar troca!</p>
+        <div>
+            <button type="button" class="negativobtn">FECHAR</button>
+        </div>
+        `;
+    }
+
+    document
+        .querySelector(".negativobtn")
+        .addEventListener("click", fecharModal);
     market();
 }
