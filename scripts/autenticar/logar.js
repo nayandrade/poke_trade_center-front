@@ -1,7 +1,6 @@
 export async function logar() {
     const email = document.querySelector("#email").value;
     const senha = document.querySelector("#senha").value;
-    // var aValue = localStorage.getItem(keyName)
     const erro = document.getElementById("erro");
 
     if (email === "" || senha === "") {
@@ -17,15 +16,17 @@ export async function logar() {
         return;
     }
 
-    const response = await fetch("http://localhost:8000/signin", {
+    const response = await fetch("http://localhost:5000/signin", {
         method: "POST",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            // Authorization: "Bearer: Token"
         },
         body: JSON.stringify({ email: email, password: senha }),
     });
+
+    const { token } = await response.json();
+    localStorage.setItem("token", JSON.stringify(token));
 
     if (response.status === 200) {
         window.location.hash = "#inicio";
@@ -41,6 +42,4 @@ export async function logar() {
         erro.textContent = "Usuário não encontrado, crie uma conta!";
         return;
     }
-    // const { token } = await a.json();
-    // localStorage.setItem("token", JSON.stringify(token));
 }

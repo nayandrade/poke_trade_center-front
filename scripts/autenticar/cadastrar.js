@@ -39,7 +39,7 @@ export async function cadastrar() {
         return;
     }
 
-    const response = await fetch("http://localhost:8000/signup", {
+    const response = await fetch("http://localhost:5000/signup", {
         method: "POST",
         headers: {
             Accept: "application/json",
@@ -49,6 +49,7 @@ export async function cadastrar() {
             email: email,
             password: senha,
             userName: nome,
+            userStatus: "user",
         }),
     });
 

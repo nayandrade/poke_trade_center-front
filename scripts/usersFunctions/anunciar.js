@@ -1,27 +1,59 @@
-import { fecharModal } from "../pages/index.js";
+import { fecharModal, pokemons } from "../pages/index.js";
+import { getToken } from "../autenticar/autenticar.js";
 
-export function anunciar() {
+export async function anunciar() {
     document.querySelector("#modal").style.display = "flex";
+    const cardId = this.parentNode.id;
+    const token = getToken();
+
+    const pokeraw = await fetch("http://localhost:5000/allpokemons", {
+        method: "GET",
+        headers: new Headers({
+            authorization: token,
+            "Content-Type": "application/x-www-form-urlencoded",
+        }),
+    });
+    const pokemons = await pokeraw.json();
 
     document.querySelector("#modal-content").innerHTML = `
     <h1>Anunciar carta</h1>
     <div id="modalAnunciar">
         <p>Em troca:</p>
-        <select name="anunciar" id="intencao">
-            <option value="filtro" hidden>Filtro</option>
-            <option value="numero">Numero</option>  
-            <option value="nomePoke">Pokemon</option>
-            <option value="proprietário">Proprietário</option>
-            <option value="tipo">Tipo</option>
-        </select>   
+        <select name="anunciar" id="intencao"></select>   
     </div>
     <div>
         <button type="button" class="negativobtn">CANCELAR</button>
-        <button type="button" class="positivobtn">CONFIRMAR</button>
+        <button type="button" class="positivobtn" id="${cardId}" >CONFIRMAR</button>
     </div>
     `;
+
+    pokemons.forEach((pokemon) => {
+        document.querySelector(
+            "#intencao"
+        ).innerHTML += `<option value="${pokemon.id}">${pokemon.name}</option>`;
+    });
 
     document
         .querySelector(".negativobtn")
         .addEventListener("click", fecharModal);
+
+    document.querySelector(".positivobtn").addEventListener("click", postar);
+}
+
+async function postar() {
+    const pokeId = this.id;
+    const pokeIntend = document.querySelector("#intencao").value;
+
+    const token = getToken();
+
+    await fetch(`http://localhost:5000/market/${pokeId}/${pokeIntend}`, {
+        method: "POST",
+        headers: new Headers({
+            authorization: token,
+            "Content-Type": "application/x-www-form-urlencoded",
+        }),
+    });
+
+    pokemons();
+    fecharModal();
 }
