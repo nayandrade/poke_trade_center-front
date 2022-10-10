@@ -7,7 +7,6 @@ export function meuspedidos() {
             <option value="filtro" hidden>Filtro</option>
             <option value="numero">Numero</option>  
             <option value="nomePoke">Pokemon</option>
-            <option value="proprietário">Proprietário</option>
             <option value="tipo">Tipo</option>
         </select>
         

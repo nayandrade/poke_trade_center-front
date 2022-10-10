@@ -1,44 +1,42 @@
 import { anunciar } from "../usersFunctions/anunciar.js";
 import { headerFooter } from "./index.js";
-
-let pokelist = [];
-let meusPokemons = [];
-
-for (let i = 1; i < 152; i++) {
-    const pokemon = {
-        id: i,
-        img: `${i}.png`,
-    };
-    pokelist.push(pokemon);
-}
+import { getToken } from "../autenticar/autenticar.js";
 
 export async function pokemons() {
     headerFooter();
     document.getElementById("conteiner").innerHTML = "";
+    const token = getToken();
 
-    const pokemons = await fetch("http://localhost:8000/pokedex");
-    console.log(pokemons);
+    const pokeraw = await fetch("http://localhost:5000/pokedex", {
+        method: "GET",
+        headers: new Headers({
+            authorization: token,
+            "Content-Type": "application/x-www-form-urlencoded",
+        }),
+    });
+    const pokemons = await pokeraw.json();
 
-    pokelist.forEach((pokemon) => {
+    pokemons.forEach((pokemon) => {
         let ausente = "";
-        let pokemonBuscado = meusPokemons.find((meuPoke) => {
-            return pokemon.id === meuPoke;
-        });
-        if (!pokemonBuscado) {
+        let btn = "";
+        if (!pokemon.hasIt) {
             ausente = "ausente";
         }
+        if (pokemon.quantity === 0) {
+            btn = "disabled";
+        }
         document.getElementById("conteiner").innerHTML += `
-        <div id="cardConteiner">
-            <div id="card">
-                <img class="${ausente} cardImage" src="http://localhost:8000/image/${pokemon.pokemonImage}" alt="">
-                <p>Quantidade:</p>
-                <button type="button">Anunciar</button>
+        <div class="cardConteiner">
+            <div class="card" id="${pokemon.id}">
+                <img class="${ausente} cardImage" src="http://localhost:5000/image/${pokemon.pokemonImage}" alt="">
+                <p>Quantidade: ${pokemon.quantity}</p>
+                <button type="button" ${btn} >Anunciar</button>
             </div>
         </div>
     `;
     });
 
-    const cards = document.querySelectorAll("#card button");
+    const cards = document.querySelectorAll(".card button");
     cards.forEach((card) => {
         card.addEventListener("click", anunciar);
     });
