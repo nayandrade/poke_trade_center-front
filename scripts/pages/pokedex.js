@@ -14,6 +14,12 @@ export async function pokemons() {
             "Content-Type": "application/x-www-form-urlencoded",
         }),
     });
+
+    if (pokeraw.status === 401) {
+        window.location.hash = "";
+        return;
+    }
+
     const pokemons = await pokeraw.json();
 
     pokemons.forEach((pokemon) => {

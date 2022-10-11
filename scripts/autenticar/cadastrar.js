@@ -54,7 +54,7 @@ export async function cadastrar() {
     });
 
     if (response.status === 201) {
-        window.location.hash = "#inicio";
+        window.location.hash = "";
         return;
     }
     if (response.status === 409) {

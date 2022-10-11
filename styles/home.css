@@ -49,21 +49,23 @@
     font-size: 20px;
 }
 
-.figuras {
+#campoFig div {
     display: flex;
     background-repeat: no-repeat;
     background-size: cover;
     background-image: url(../assets/costas.jpg);
-    height: 220px;
-    width: 260px;
-    margin-top: 10px;
+    background-position: center;
+    height: 240px;
+    width: 200px;
+    margin-top: 3px;
     border-radius: 10px;
     margin-bottom: 10px;
+    box-shadow: #ffffff 0 0 10px;
 }
 
 #textFig {
     margin-top: 60px;
-    margin-bottom: -5px;
+    margin-bottom: -10px;
 }
 
 #textFig p {

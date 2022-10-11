@@ -57,7 +57,8 @@
 
 #infoPerf {
     height: 190px;
-    width: 290px;
+    width: auto;
+    max-width: 550px;
     color: #fffafa;
     font-size: 26px;
     font-family: Righteous-Regular;

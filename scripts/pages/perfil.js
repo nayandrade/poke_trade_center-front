@@ -1,8 +1,26 @@
 import { meuspedidos } from "./meusPedidos.js";
 import { editarperfil, trocarft } from "../usersFunctions/editarPerfil.js";
 import { headerFooter } from "./index.js";
+import { getToken } from "../autenticar/autenticar.js";
 
-export function perfil() {
+export async function perfil() {
+    const token = getToken();
+
+    const userRaw = await fetch("http://localhost:5000/user", {
+        method: "GET",
+        headers: new Headers({
+            authorization: token,
+            "Content-Type": "application/x-www-form-urlencoded",
+        }),
+    });
+
+    if (userRaw.status === 401) {
+        window.location.hash = "";
+        return;
+    }
+
+    const userData = await userRaw.json();
+
     headerFooter();
 
     document.getElementById("conteiner").innerHTML = `
@@ -10,10 +28,10 @@ export function perfil() {
         <div id="ftPerfil"></div>
         <div id="logoUso"></div>
         <div id="infoPerf"> 
-            <p>Nome de usuário:</p>
-            <p>Classificação:</p>
-            <p>Pokedex:</p>
-            <p>E-mail:</p>
+            <p>Nome de usuário: ${userData.userName}</p>
+            <p>Classificação: ${userData.classification}</p>
+            <p>Pokedex: ${userData.pokedex} / 151</p>
+            <p>E-mail: ${userData.email}</p>
         </div>
     </div>
 

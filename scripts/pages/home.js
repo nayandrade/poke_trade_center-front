@@ -1,31 +1,102 @@
 import { headerFooter } from "./index.js";
+import { getToken } from "../autenticar/autenticar.js";
 
-export function home() {
+export async function home() {
+    const token = getToken();
+
+    const pokeraw = await fetch("http://localhost:5000/home", {
+        method: "GET",
+        headers: new Headers({
+            authorization: token,
+            "Content-Type": "application/x-www-form-urlencoded",
+        }),
+    });
+
+    if (pokeraw.status === 401) {
+        window.location.hash = "";
+        return;
+    }
+
+    const pokemons = await pokeraw.json();
+
     document.querySelector("body").style.backgroundColor = "#a63232";
     document.querySelector("#conteiner").style.display = "flex";
     document.querySelector("#entrar").style.display = "none";
 
     headerFooter();
 
-    document.getElementById("conteiner").innerHTML = `
-    <div id="perfil">
-        <div id="perfilImg">
-            <img class="img" src="./assets/pokeball.png">
+    if (pokemons.status === "previousCards") {
+        document.getElementById("conteiner").innerHTML = `
+        <div id="perfil">
+            <div id="perfilImg">
+                <img class="img" src="./assets/pokeball.png">
+            </div>
+            <div id="testPer"><p>Olá Treinador Ash Ketchum</p></div>
         </div>
-        <div id="testPer"><p>Olá Treinador Ash Ketchum</p></div>
-    </div>
 
-    <div id="central">
-        <div id="textFig">
-            <p >Figurinhas Ganhas Hoje:</p>
+        <div id="central">
+            <div id="textFig">
+                <p >Figurinhas Ganhas Hoje:</p>
+            </div>
+            <div id="campoFig">
+                <div id="c0" style="background-image: url('http://localhost:5000/image/${pokemons.cards[0].pokemonImage.replaceAll(
+                    '"',
+                    ""
+                )}')"></div>
+                <div id="c1" style="background-image: url('http://localhost:5000/image/${pokemons.cards[1].pokemonImage.replaceAll(
+                    '"',
+                    ""
+                )}')"></div>
+                <div id="c2" style="background-image: url('http://localhost:5000/image/${pokemons.cards[2].pokemonImage.replaceAll(
+                    '"',
+                    ""
+                )}')"></div>
+                <div id="c3" style="background-image: url('http://localhost:5000/image/${pokemons.cards[3].pokemonImage.replaceAll(
+                    '"',
+                    ""
+                )}')"></div>
+                <div id="c4" style="background-image: url('http://localhost:5000/image/${pokemons.cards[4].pokemonImage.replaceAll(
+                    '"',
+                    ""
+                )}')"></div>
+            </div>
         </div>
-        <div id="campoFig">
-            <div class="figuras"></div>
-            <div class="figuras"></div>
-            <div class="figuras"></div>
-            <div class="figuras"></div>
-            <div class="figuras"></div>
+        `;
+    } else {
+        document.getElementById("conteiner").innerHTML = `
+        <div id="perfil">
+            <div id="perfilImg">
+                <img class="img" src="./assets/pokeball.png">
+            </div>
+            <div id="testPer"><p>Olá Treinador Ash Ketchum</p></div>
         </div>
-    </div>
-    `;
+
+        <div id="central">
+            <div id="textFig">
+                <p >Figurinhas Ganhas Hoje:</p>
+            </div>
+            <div id="campoFig">
+                <div id="c0" data-image="${pokemons.cards[0].pokemonImage}"></div>
+                <div id="c1" data-image="${pokemons.cards[1].pokemonImage}"></div>
+                <div id="c2" data-image="${pokemons.cards[2].pokemonImage}"></div>
+                <div id="c3" data-image="${pokemons.cards[3].pokemonImage}"></div>
+                <div id="c4" data-image="${pokemons.cards[4].pokemonImage}"></div>
+            </div>
+        </div>
+        `;
+
+        const cardsDaily = document.querySelectorAll("#campoFig div");
+        cardsDaily.forEach((card) => {
+            card.addEventListener("click", mostrar);
+        });
+    }
+}
+
+function mostrar() {
+    const pokeImg = this.dataset.image.replaceAll('"', "");
+    const id = this.id;
+
+    document.getElementById(
+        `${id}`
+    ).style.backgroundImage = `url(http://localhost:5000/image/${pokeImg})`;
 }
