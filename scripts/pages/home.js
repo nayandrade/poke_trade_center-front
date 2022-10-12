@@ -29,9 +29,11 @@ export async function home() {
         document.getElementById("conteiner").innerHTML = `
         <div id="perfil">
             <div id="perfilImg">
-                <img class="img" src="./assets/pokeball.png">
+                <div class="img"></div>
             </div>
-            <div id="testPer"><p>Olá Treinador Ash Ketchum</p></div>
+            <div id="testPer"><p>Olá ${pokemons.classification} ${
+            pokemons.userName
+        }</p></div>
         </div>
 
         <div id="central">
@@ -66,7 +68,7 @@ export async function home() {
         document.getElementById("conteiner").innerHTML = `
         <div id="perfil">
             <div id="perfilImg">
-                <img class="img" src="./assets/pokeball.png">
+                <div class="img"></div>
             </div>
             <div id="testPer"><p>Olá Treinador Ash Ketchum</p></div>
         </div>
@@ -89,6 +91,17 @@ export async function home() {
         cardsDaily.forEach((card) => {
             card.addEventListener("click", mostrar);
         });
+    }
+
+    if (pokemons.classification === "Treinador") {
+        document.querySelector(".img").style.backgroundImage =
+            "url(../../assets/pokeball.png)";
+    } else if (pokemons.classification === "Líder de ginásio") {
+        document.querySelector(".img").style.backgroundImage =
+            "url(../../assets/ultra.png)";
+    } else if (pokemons.classification === "Mestre Pokemon") {
+        document.querySelector(".img").style.backgroundImage =
+            "url(../../assets/master.png)";
     }
 }
 

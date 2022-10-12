@@ -1,6 +1,7 @@
 import { modalMercado } from "../usersFunctions/trocar.js";
 import { headerFooter } from "./index.js";
 import { getToken } from "../autenticar/autenticar.js";
+import { pesquisar } from "../usersFunctions/pesquisar.js";
 
 export async function market() {
     headerFooter();
@@ -22,23 +23,24 @@ export async function market() {
 
     const pokemons = await pokeraw.json();
 
-    document.getElementById("conteiner").innerHTML = `      
-    <input placeholder="PESQUISAR" type="text" id="pesquisar">
-    <select name="filtro">
-        <option value="filtro" hidden>Filtro</option>
-        <option value="numero">Numero</option>  
-        <option value="proprietário">Proprietário</option>
-        <option value="nomePoke">Pokemon</option>
-        <option value="tipo">Tipo</option>
-    </select>
+    document.getElementById("conteiner").innerHTML = `
+    <div id="barraSearch">
+        <input placeholder="PESQUISAR" type="text" id="pesquisar">
+        <select name="filtro" id="filter">
+            <option value="byname">Pokemon</option>
+            <option value="bynumber">Numero</option>  
+            <option value="byowner">Proprietário</option>
+        </select>
+        <button type="button" id="search"><span>Procurar</span><span class="material-icons">search</span></button>
+    </div>
     
     <table>
         <tr>
-            <th>Numero</th>
+            <th class="numberpoke">Numero</th>
             <th>Proprietário</th>
             <th>Pokemon</th>
             <th>Em Troca de</th>
-            <th>Gotch ya</th>
+            <th class="btntable">Gotch ya</th>
         </tr>
     </table>`;
 
@@ -47,14 +49,36 @@ export async function market() {
         <tr>
             <td>N°${pokemon.number}</td>
             <td>${pokemon.userName}</td>
-            <td>${pokemon.name}</td>
-            <td>${pokemon.pokeIntentName}</td>
             <td>
-                <button class="tabelabtn" data-mycard="${pokemon.pokeIntentName}" data-mycardnum="${pokemon.pokeIntentNumber}" data-marketname="${pokemon.name}" data-marketnum="${pokemon.id}">Trocar</button>
+                <div class="ftMarket" style="background-image: url('http://localhost:5000/image/${pokemon.pokemonImage.replaceAll(
+                    '"',
+                    ""
+                )}')"></div>
+                <p>${pokemon.name}</p>
+            </td>
+
+            <td>
+                <div class="ftMarket" style="background-image: url('http://localhost:5000/image/${pokemon.pokeIntentImage.replaceAll(
+                    '"',
+                    ""
+                )}')"></div>
+                <p>${pokemon.pokeIntentName}</p>
+            </td>
+
+            <td>
+                <button class="tabelabtn" data-mycard="${
+                    pokemon.pokeIntentName
+                }" data-mycardnum="${
+            pokemon.pokeIntentNumber
+        }" data-marketname="${pokemon.name}" data-marketnum="${
+            pokemon.id
+        }">Trocar</button>
             </td>
         </tr>
         `;
     });
+
+    document.getElementById("search").addEventListener("click", pesquisar);
 
     const td = document.querySelectorAll("td button");
     td.forEach((td) => {

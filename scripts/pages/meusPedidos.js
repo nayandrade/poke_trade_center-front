@@ -22,13 +22,15 @@ export async function meuspedidos() {
     const pokemons = await pokeraw.json();
 
     document.getElementById("conteiner").innerHTML = `
-        <input placeholder="PESQUISAR" type="text" id="pesquisar">
-        <select name="filtro">
-            <option value="filtro" hidden>Filtro</option>
-            <option value="numero">Numero</option>  
-            <option value="nomePoke">Pokemon</option>
-            <option value="tipo">Tipo</option>
-        </select>
+        <div id="barraSearch">
+            <input placeholder="PESQUISAR" type="text" id="pesquisar">
+            <select name="filtro">
+                <option value="nomePoke">Pokemon</option>
+                <option value="numero">Numero</option>   
+            </select>
+            <button type="button" id="search"><span>Procurar</span><span class="material-icons">search</span></button>
+        </div>
+
         
         <table>
             <tr>
@@ -46,14 +48,34 @@ export async function meuspedidos() {
         <tr>
             <td>N°${pokemon.number}</td>
             <td>${pokemon.userName}</td>
-            <td>${pokemon.name}</td>
-            <td>${pokemon.pokeIntentName}</td>
             <td>
-                <button class="tabelabtn cancelbtn" data-pokeintent="${pokemon.pokeIntentName}" data-mycardname="${pokemon.name}" data-mycardid="${pokemon.id}">Cancelar</button>
+                <div class="ftMarket" style="background-image: url('http://localhost:5000/image/${pokemon.pokemonImage.replaceAll(
+                    '"',
+                    ""
+                )}')"></div>
+                <p>${pokemon.name}</p>
+            </td>
+            <td>
+                <div class="ftMarket" style="background-image: url('http://localhost:5000/image/${pokemon.pokeIntentImage.replaceAll(
+                    '"',
+                    ""
+                )}')"></div>
+                <p>${pokemon.pokeIntentName}</p>
+            </td>
+            <td>
+                <button class="tabelabtn cancelbtn" data-pokeintent="${
+                    pokemon.pokeIntentName
+                }" data-mycardname="${pokemon.name}" data-mycardid="${
+            pokemon.id
+        }">Cancelar</button>
             </td>
         </tr>
         `;
     });
+
+    // document
+    //     .getElementById("search")
+    //     .addEventListener("click", pesquisarMeusPedidos);
 
     const td = document.querySelectorAll("td button");
     td.forEach((td) => {

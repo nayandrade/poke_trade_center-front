@@ -38,13 +38,24 @@ export async function perfil() {
 
     <div id="btoes">
         <div>
-            <button type="button" id="editarInfo">Editar Perfil</button>
+            <button type="button" id="editarInfo" data-nome="${userData.userName}">Editar Perfil</button>
         </div>
         <div> 
             <button type="button" id="meuspedidos">Meus Pedidos</button>
         </div>
     </div>
     `;
+
+    if (userData.classification === "Treinador") {
+        document.getElementById("logoUso").style.backgroundImage =
+            "url(../../assets/pokeball.png)";
+    } else if (userData.classification === "Líder de ginásio") {
+        document.getElementById("logoUso").style.backgroundImage =
+            "url(../../assets/ultra.png)";
+    } else if (userData.classification === "Mestre Pokemon") {
+        document.getElementById("logoUso").style.backgroundImage =
+            "url(../../assets/master.png)";
+    }
 
     document.getElementById("ftPerfil").addEventListener("click", trocarft);
 
