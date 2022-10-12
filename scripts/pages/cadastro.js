@@ -23,7 +23,7 @@ export function cadastro() {
             <img id="maiorball" src="./assets/logotrade.png" alt="imgPokeball">
         </div>
         <form id="rightDiv">
-            <input id="nomeC" type="text" placeholder="Nome">
+            <input id="nomeC" type="text" placeholder="Nome" maxlength="20">
             <input id="emailC" type="email" placeholder="E-mail">
             <input id="senhaC" type="password" placeholder="Senha">
             <input id="senhaconfC" type="password" placeholder="Confirmar Senha">

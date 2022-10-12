@@ -1,14 +1,36 @@
 import { cancelarTroca } from "../usersFunctions/cancelarTroca.js";
+import { headerFooter } from "./index.js";
+import { getToken } from "../autenticar/autenticar.js";
 
-export function meuspedidos() {
+export async function meuspedidos() {
+    headerFooter();
+    const token = getToken();
+
+    const pokeraw = await fetch("http://localhost:5000/mymarket", {
+        method: "GET",
+        headers: new Headers({
+            authorization: token,
+            "Content-Type": "application/x-www-form-urlencoded",
+        }),
+    });
+
+    if (pokeraw.status === 401) {
+        window.location.hash = "";
+        return;
+    }
+
+    const pokemons = await pokeraw.json();
+
     document.getElementById("conteiner").innerHTML = `
-        <input placeholder="PESQUISAR" type="text" id="pesquisar">
-        <select name="filtro">
-            <option value="filtro" hidden>Filtro</option>
-            <option value="numero">Numero</option>  
-            <option value="nomePoke">Pokemon</option>
-            <option value="tipo">Tipo</option>
-        </select>
+        <div id="barraSearch">
+            <input placeholder="PESQUISAR" type="text" id="pesquisar">
+            <select name="filtro">
+                <option value="nomePoke">Pokemon</option>
+                <option value="numero">Numero</option>   
+            </select>
+            <button type="button" id="search"><span>Procurar</span><span class="material-icons">search</span></button>
+        </div>
+
         
         <table>
             <tr>
@@ -18,15 +40,42 @@ export function meuspedidos() {
                 <th>Em Troca de</th>
                 <th>Gotch ya</th>
             </tr>
-            <tr>
-                <td>Numero</td>
-                <td>Proprietário</td>
-                <td>Pokemon</td>
-                <td>em troca de </td>
-                <td><button class="tabelabtn cancelbtn" onclick="modalCancelar()">Cancelar</button></td>
-            </tr>
         </table>
     `;
+
+    pokemons.forEach((pokemon) => {
+        document.querySelector("table").innerHTML += `
+        <tr>
+            <td>N°${pokemon.number}</td>
+            <td>${pokemon.userName}</td>
+            <td>
+                <div class="ftMarket" style="background-image: url('http://localhost:5000/image/${pokemon.pokemonImage.replaceAll(
+                    '"',
+                    ""
+                )}')"></div>
+                <p>${pokemon.name}</p>
+            </td>
+            <td>
+                <div class="ftMarket" style="background-image: url('http://localhost:5000/image/${pokemon.pokeIntentImage.replaceAll(
+                    '"',
+                    ""
+                )}')"></div>
+                <p>${pokemon.pokeIntentName}</p>
+            </td>
+            <td>
+                <button class="tabelabtn cancelbtn" data-pokeintent="${
+                    pokemon.pokeIntentName
+                }" data-mycardname="${pokemon.name}" data-mycardid="${
+            pokemon.id
+        }">Cancelar</button>
+            </td>
+        </tr>
+        `;
+    });
+
+    // document
+    //     .getElementById("search")
+    //     .addEventListener("click", pesquisarMeusPedidos);
 
     const td = document.querySelectorAll("td button");
     td.forEach((td) => {
