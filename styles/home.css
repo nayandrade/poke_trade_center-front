@@ -15,10 +15,8 @@
 }
 
 #perfilImg {
-    background-image: url(../cartamelhorada/144.png);
     background-repeat: no-repeat;
     background-size: cover;
-    border: solid 2px #000;
     height: 120px;
     width: 120px;
     border-radius: 50%;
@@ -27,8 +25,8 @@
 
 .img {
     position: relative;
-    top: 83px;
-    left: 90px;
+    top: 85px;
+    left: 93px;
     height: 35px;
     width: 35px;
     border-radius: 50%;

@@ -71,6 +71,8 @@ async function salvarEdit() {
     });
 
     if (pokeraw.status === 200) {
+        const { token: newToken } = await pokeraw.json();
+        localStorage.setItem("token", JSON.stringify(newToken));
         perfil();
         fecharModal();
         return;
@@ -83,19 +85,25 @@ async function salvarEdit() {
     }
 }
 
-export function trocarft() {
+export async function trocarft() {
+    const token = getToken();
+
+    const pokeraw = await fetch("http://localhost:5000/mypokemons", {
+        method: "GET",
+        headers: new Headers({
+            authorization: token,
+            "Content-Type": "application/x-www-form-urlencoded",
+        }),
+    });
+    const pokemons = await pokeraw.json();
+
     document.querySelector("#modal").style.display = "flex";
 
     document.querySelector("#modal-content").innerHTML = `
     <h1>Escolha seu avatar</h1>
     <div id="modalAnunciar">
-        <select name="trocarft" id="trocarftmodal">
-            <option value="filtro" hidden>Filtro</option>
-            <option value="numero">Numero</option>  
-            <option value="nomePoke">Pokemon</option>
-            <option value="proprietário">Proprietário</option>
-            <option value="tipo">Tipo</option>
-        </select>   
+        <select name="trocarft" id="trocarftmodal"></select>  
+        <p id="erroEdit"></p> 
     </div>
     <div>
         <button type="button" class="negativobtn">CANCELAR</button>
@@ -103,7 +111,45 @@ export function trocarft() {
     </div>
     `;
 
+    pokemons.forEach((pokemon) => {
+        document.querySelector(
+            "#trocarftmodal"
+        ).innerHTML += `<option value="${pokemon.pokemonImage}">${pokemon.name}</option>`;
+    });
+
     document
         .querySelector(".negativobtn")
         .addEventListener("click", fecharModal);
+
+    document.querySelector(".positivobtn").addEventListener("click", salvarft);
+}
+
+async function salvarft() {
+    const image = document.getElementById("trocarftmodal").value;
+
+    const token = getToken();
+
+    const pokeraw = await fetch("http://localhost:5000/userpic", {
+        method: "PUT",
+        headers: new Headers({
+            authorization: token,
+            "Content-Type": "application/json",
+        }),
+        body: JSON.stringify({ userImage: image }),
+    });
+
+    const { token: newToken } = await pokeraw.json();
+    localStorage.setItem("token", JSON.stringify(newToken));
+
+    if (pokeraw.status === 200) {
+        perfil();
+        fecharModal();
+        return;
+    }
+    if (pokeraw.status === 422 || pokeraw.status === 500) {
+        document.getElementById("erroEdit").style.display = "block";
+        document.getElementById("erroEdit").textContent =
+            "Ocorreu um erro ao salvar as alterações!";
+        return;
+    }
 }

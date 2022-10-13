@@ -1,6 +1,7 @@
 import { cancelarTroca } from "../usersFunctions/cancelarTroca.js";
 import { headerFooter } from "./index.js";
 import { getToken } from "../autenticar/autenticar.js";
+import { pesquisarMeusPedidos } from "../usersFunctions/pesquisarMeus.js";
 
 export async function meuspedidos() {
     headerFooter();
@@ -24,9 +25,9 @@ export async function meuspedidos() {
     document.getElementById("conteiner").innerHTML = `
         <div id="barraSearch">
             <input placeholder="PESQUISAR" type="text" id="pesquisar">
-            <select name="filtro">
-                <option value="nomePoke">Pokemon</option>
-                <option value="numero">Numero</option>   
+            <select name="filtro" id="filter">
+                <option value="byname">Pokemon</option>
+                <option value="bynumber">Numero</option>   
             </select>
             <button type="button" id="search"><span>Procurar</span><span class="material-icons">search</span></button>
         </div>
@@ -73,9 +74,9 @@ export async function meuspedidos() {
         `;
     });
 
-    // document
-    //     .getElementById("search")
-    //     .addEventListener("click", pesquisarMeusPedidos);
+    document
+        .getElementById("search")
+        .addEventListener("click", pesquisarMeusPedidos);
 
     const td = document.querySelectorAll("td button");
     td.forEach((td) => {

@@ -70,7 +70,7 @@ export async function home() {
             <div id="perfilImg">
                 <div class="img"></div>
             </div>
-            <div id="testPer"><p>Olá Treinador Ash Ketchum</p></div>
+            <div id="testPer"><p>Olá ${pokemons.classification} ${pokemons.userName}</p></div>
         </div>
 
         <div id="central">
@@ -92,6 +92,13 @@ export async function home() {
             card.addEventListener("click", mostrar);
         });
     }
+
+    document.querySelector(
+        "#perfilImg"
+    ).style.backgroundImage = `url('http://localhost:5000/image/${pokemons.userImage.replaceAll(
+        '"',
+        ""
+    )}')`;
 
     if (pokemons.classification === "Treinador") {
         document.querySelector(".img").style.backgroundImage =
