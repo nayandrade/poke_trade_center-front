@@ -46,6 +46,13 @@ export async function perfil() {
     </div>
     `;
 
+    document.querySelector(
+        "#ftPerfil"
+    ).style.backgroundImage = `url('http://localhost:5000/image/${userData.userImage.replaceAll(
+        '"',
+        ""
+    )}')`;
+
     if (userData.classification === "Treinador") {
         document.getElementById("logoUso").style.backgroundImage =
             "url(../../assets/pokeball.png)";
